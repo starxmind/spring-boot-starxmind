@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spring-boot-starxmind</artifactId>
+        <groupId>com.starxmind</groupId>
+        <version>0.0.2</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>starxmind-spring-boot-http</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.starxmind</groupId>
+            <artifactId>starxmind-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.starxmind</groupId>
+            <artifactId>bass-http</artifactId>
+            <version>${bass.version}</version>
+        </dependency>
+    </dependencies>
+</project>

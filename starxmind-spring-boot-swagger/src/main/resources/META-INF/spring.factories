@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.starxmind.boot.swagger.SwaggerConfig,\
+  com.starxmind.boot.swagger.SwaggerProperties
