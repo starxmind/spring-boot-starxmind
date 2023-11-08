@@ -2,6 +2,7 @@ package com.starxmind.boot.snowflake;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -12,6 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author pizzalord
  * @since 1.0
  */
+@Slf4j
 @Data
 @RequiredArgsConstructor
 public class SnowflakeIDPool {
@@ -29,24 +31,27 @@ public class SnowflakeIDPool {
         this.minimumIdle = minimumIdle;
         this.snowflakeIDGenerator = snowflakeIDGenerator;
         this.idPool = new LinkedBlockingQueue<>(maximumPoolSize);
-        // Fill the pool to reach the minimumIdle size
-        while (idPool.size() < minimumIdle) {
-            long id = snowflakeIDGenerator.generate();
-            idPool.offer(id);
-        }
     }
 
     public long getId() {
+        if (getPoolSize() < minimumIdle) {
+            synchronized (this) {
+                int numberOfIdsToGenerate = maximumPoolSize - getPoolSize(); // 补满池子
+                while (numberOfIdsToGenerate > 0) {
+                    long id = snowflakeIDGenerator.generate();
+                    idPool.offer(id);
+                    numberOfIdsToGenerate--;
+                }
+            }
+            log.debug("The snowflake ID pool has been filled, now pool size: {}", getPoolSize());
+        }
+
         try {
             return idPool.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Error getting ID from pool", e);
         }
-    }
-
-    public void returnId(long id) {
-        idPool.offer(id);
     }
 
     public int getPoolSize() {
