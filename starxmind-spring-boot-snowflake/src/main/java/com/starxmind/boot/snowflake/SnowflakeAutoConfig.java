@@ -23,7 +23,14 @@ public class SnowflakeAutoConfig {
     @ConditionalOnMissingBean
     public SnowflakeIDPool snowflakeIDPool(@Value("${starxmind.snowflake.pool.maximumPoolSize:100}") int maximumPoolSize,
                                            @Value("${starxmind.snowflake.pool.minimumIdle:10}") int minimumIdle,
+                                           @Value("${starxmind.snowflake.pool.impl:}") String impl,
                                            SnowflakeIDGenerator snowflakeIDGenerator) {
-        return new SnowflakeIDPool(maximumPoolSize, minimumIdle, snowflakeIDGenerator);
+        // 以后拓展方式：传递雪花ID池的实现类名来指定雪花ID池
+//        if (StringUtils.isBlank(impl)) {
+//            impl = MemorySnowflakeIDPool.class.getName();
+//        }
+        SnowflakeIDPool snowflakeIDPool = new MemorySnowflakeIDPool(maximumPoolSize, minimumIdle, snowflakeIDGenerator);
+        snowflakeIDPool.init();
+        return snowflakeIDPool;
     }
 }

@@ -13,6 +13,7 @@ import lombok.Getter;
 public enum ResponseCode {
     SUCCESS(0, "操作成功"),
     FAILED(-1, "操作失败"),
+    WARNING(-2, "告警"),
     ILLEGAL_REQ(400, "参数错误或请求非法"),
     UNAUTHORIZED(401, "授权无效或过期"),
     FORBIDDEN(403, "资源访问受限"),

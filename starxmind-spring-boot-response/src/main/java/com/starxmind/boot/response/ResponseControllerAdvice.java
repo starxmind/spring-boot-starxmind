@@ -93,7 +93,19 @@ public class ResponseControllerAdvice {
     }
 
     /**
-     * 捕获未处理的异常 code:自定义
+     * 告警 code:-2
+     *
+     * @param ex 异常
+     * @return 返回
+     */
+    @ExceptionHandler(WarningException.class)
+    public Response handleWarningException(Exception ex) {
+        log.warn(ex.getMessage());
+        return Response.failWith(ResponseCode.WARNING.getCode(), ex.getMessage());
+    }
+
+    /**
+     * 捕获未处理的异常 code:-1
      *
      * @param ex 异常
      * @return 返回
