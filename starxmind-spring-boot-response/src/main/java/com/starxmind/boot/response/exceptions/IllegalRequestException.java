@@ -1,12 +1,14 @@
 package com.starxmind.boot.response.exceptions;
 
+import com.starxmind.boot.response.exceptions.supperclass.CustomerException;
+
 /**
  * 参数非法
  *
  * @author pizzalord
  * @since 1.0
  */
-public class IllegalRequestException extends RuntimeException{
+public class IllegalRequestException extends CustomerException {
     private static final long serialVersionUID = -1455046147356188500L;
 
     public IllegalRequestException() {

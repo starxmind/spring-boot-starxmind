@@ -1,8 +1,7 @@
 package com.starxmind.boot.response;
 
-import com.starxmind.boot.response.options.autoload.OptionsFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -12,17 +11,18 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.0
  */
 @Slf4j
+@ComponentScan(basePackages = "com.starxmind.boot.response")
 @Configuration
 public class ResponseAutoConfig {
-    @Bean
-    public ResponseControllerAdvice responseAdvice() {
-        log.info("starxmind spring-boot: ResponseControllerAdvice is registered...");
-        return new ResponseControllerAdvice();
-    }
-
-    @Bean
-    public OptionsFactory optionsFactory() {
-        log.info("starxmind: OptionsFactory is registered...");
-        return new OptionsFactory();
-    }
+//    @Bean
+//    public ResponseControllerAdvice responseAdvice() {
+//        log.info("starxmind spring-boot: ResponseControllerAdvice is registered...");
+//        return new ResponseControllerAdvice();
+//    }
+//
+//    @Bean
+//    public OptionsFactory optionsFactory() {
+//        log.info("starxmind: OptionsFactory is registered...");
+//        return new OptionsFactory();
+//    }
 }

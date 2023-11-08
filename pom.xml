@@ -40,6 +40,7 @@
         <module>starxmind-spring-boot-http</module>
         <module>starxmind-spring-boot-wechat</module>
         <module>starxmind-spring-boot-ldap</module>
+        <module>starxmind-spring-boot-snowflake</module>
     </modules>
 
     <parent>
@@ -51,11 +52,11 @@
 
     <groupId>com.starxmind</groupId>
     <artifactId>spring-boot-starxmind</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <properties>
         <!-- starxmind springboot 版本 -->
-        <springboot-starxmind.version>0.0.3</springboot-starxmind.version>
+        <springboot-starxmind.version>0.0.4</springboot-starxmind.version>
         <!-- 基础依赖版本 -->
         <bass.version>0.0.1</bass.version>
         <!-- 第三方库依赖版本 -->
@@ -276,6 +277,11 @@
             <dependency>
                 <groupId>com.starxmind</groupId>
                 <artifactId>starxmind-spring-boot-ldap</artifactId>
+                <version>${springboot-starxmind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.starxmind</groupId>
+                <artifactId>starxmind-spring-boot-snowflake</artifactId>
                 <version>${springboot-starxmind.version}</version>
             </dependency>
         </dependencies>

@@ -37,7 +37,7 @@ public class AuthorityInterceptor implements HandlerInterceptor, InitializingBea
     public void afterPropertiesSet() throws Exception {
         Map<String, Authentication> authenticationMap = applicationContextHolder.getApplicationContext().getBeansOfType(Authentication.class);
         AUTHENTICATIONS = authenticationMap.values();
-        log.debug("<Starxmind Authority> has found <{}> authentications", authenticationMap.size());
+        log.info("<Starxmind Authority> has found <{}> authentications", authenticationMap.size());
     }
 
     @Override

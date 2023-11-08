@@ -1,9 +1,11 @@
 package com.starxmind.boot.response.exceptions;
 
+import com.starxmind.boot.response.exceptions.supperclass.ServerException;
+
 /**
  * 未知返回代码异常
  */
-public class UnknownResponseCodeException extends RuntimeException {
+public class UnknownResponseCodeException extends ServerException {
 
     private static final long serialVersionUID = -5006604996581757017L;
 
