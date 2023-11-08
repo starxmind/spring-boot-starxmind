@@ -31,9 +31,10 @@ public class SnowflakeIDPool {
         this.minimumIdle = minimumIdle;
         this.snowflakeIDGenerator = snowflakeIDGenerator;
         this.idPool = new LinkedBlockingQueue<>(maximumPoolSize);
+        checkPoolSize();
     }
 
-    public long getId() {
+    private void checkPoolSize() {
         if (getPoolSize() < minimumIdle) {
             synchronized (this) {
                 int numberOfIdsToGenerate = maximumPoolSize - getPoolSize(); // 补满池子
@@ -45,7 +46,10 @@ public class SnowflakeIDPool {
             }
             log.debug("The snowflake ID pool has been filled, now pool size: {}", getPoolSize());
         }
+    }
 
+    public long getId() {
+        checkPoolSize();
         try {
             return idPool.take();
         } catch (InterruptedException e) {
