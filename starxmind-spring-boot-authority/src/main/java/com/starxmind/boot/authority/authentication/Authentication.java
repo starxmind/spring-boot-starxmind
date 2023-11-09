@@ -2,6 +2,7 @@ package com.starxmind.boot.authority.authentication;
 
 
 import com.starxmind.boot.authority.user.AuthorizedUser;
+import com.starxmind.boot.authority.user.UserContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,4 +34,8 @@ public interface Authentication<U extends AuthorizedUser> {
      * @param user authorized user
      */
     void cacheUser(U user);
+
+    default U getUser() {
+        return (U) UserContextHolder.get();
+    }
 }
