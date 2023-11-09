@@ -21,10 +21,17 @@ public interface Authentication<U extends AuthorizedUser> {
     String authenticationName();
 
     /**
+     * if match the request
+     * @param request Http request
+     * @return match result
+     */
+    boolean match(HttpServletRequest request);
+
+    /**
      * parse user from HttpServletRequest
      *
-     * @param request
-     * @return
+     * @param request Http request
+     * @return parsed user
      */
     U parseUser(HttpServletRequest request);
 

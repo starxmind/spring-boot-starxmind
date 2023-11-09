@@ -28,7 +28,7 @@ public class ResponseControllerAdvice {
     public Response handleParamException(MethodArgumentNotValidException ex) {
         FieldError fieldError = ex.getBindingResult().getFieldError();
         String friendlyMessage = String.format("参数{%s}%s", fieldError.getField(), fieldError.getDefaultMessage());
-        log.error(ResponseCode.ILLEGAL_REQ.getMessage() + ":" + fieldError);
+        log.error(ResponseCode.ILLEGAL_REQ + ": " + fieldError);
         return Response.failWith(ResponseCode.ILLEGAL_REQ.getCode(), friendlyMessage);
     }
 
@@ -52,7 +52,7 @@ public class ResponseControllerAdvice {
      */
     @ExceptionHandler(UnauthorizedException.class)
     public Response handleUnauthorizedException(UnauthorizedException ex) {
-        log.error(ResponseCode.UNAUTHORIZED + ":" + ex.getMessage());
+        log.error(ResponseCode.UNAUTHORIZED + ": " + ex.getMessage());
         return Response.failWith(ResponseCode.UNAUTHORIZED);
     }
 
@@ -64,7 +64,7 @@ public class ResponseControllerAdvice {
      */
     @ExceptionHandler(ForbiddenException.class)
     public Response handleForbiddenException(ForbiddenException ex) {
-        log.error(ResponseCode.FORBIDDEN + ":" + ex.getMessage());
+        log.error(ResponseCode.FORBIDDEN + ": " + ex.getMessage());
         return Response.failWith(ResponseCode.FORBIDDEN);
     }
 
@@ -76,7 +76,7 @@ public class ResponseControllerAdvice {
      */
     @ExceptionHandler(InternalServerException.class)
     public Response handleInternalServerException(InternalServerException ex) {
-        log.error(ResponseCode.INTERNAL_SERVER_ERROR + ":" + ex.getMessage());
+        log.error(ResponseCode.INTERNAL_SERVER_ERROR + ": " + ex.getMessage(), ex);
         return Response.failWith(ResponseCode.INTERNAL_SERVER_ERROR);
     }
 
@@ -88,7 +88,7 @@ public class ResponseControllerAdvice {
      */
     @ExceptionHandler(ServiceUnavailableException.class)
     public Response handleInternalServerException(ServiceUnavailableException ex) {
-        log.error(ResponseCode.SERVICE_UNAVAILABLE + ":" + ex.getMessage());
+        log.error(ResponseCode.SERVICE_UNAVAILABLE + ": " + ex.getMessage(), ex);
         return Response.failWith(ResponseCode.SERVICE_UNAVAILABLE);
     }
 
@@ -100,7 +100,7 @@ public class ResponseControllerAdvice {
      */
     @ExceptionHandler(WarningException.class)
     public Response handleWarningException(Exception ex) {
-        log.warn(ex.getMessage());
+        log.error(ResponseCode.WARNING + ": " + ex.getMessage());
         return Response.failWith(ResponseCode.WARNING.getCode(), ex.getMessage());
     }
 
@@ -112,7 +112,7 @@ public class ResponseControllerAdvice {
      */
     @ExceptionHandler(Exception.class)
     public Response handleCustomerException(Exception ex) {
-        log.error(ex.getMessage(), ex);
+        log.error(ResponseCode.FAILED + ": " + ex.getMessage(), ex);
         String error = ex.getMessage();
         return Response.fail(StringUtils.isNotBlank(error) ? error : ResponseCode.FAILED.getMessage());
     }

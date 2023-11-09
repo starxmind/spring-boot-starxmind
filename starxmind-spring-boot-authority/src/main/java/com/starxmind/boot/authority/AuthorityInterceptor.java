@@ -5,7 +5,7 @@ import com.starxmind.boot.authority.authentication.Authentication;
 import com.starxmind.boot.authority.user.AuthorizedUser;
 import com.starxmind.boot.authority.user.UserContextHolder;
 import com.starxmind.boot.utils.ApplicationContextHolder;
-import com.starxmind.boot.utils.RequestUrlUtils;
+import com.starxmind.boot.utils.ExcludeResources;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Map;
+
+import static com.starxmind.boot.utils.PathUtils.PATH_MATCHER;
 
 /**
  * Authority interceptor
@@ -51,8 +53,8 @@ public class AuthorityInterceptor implements HandlerInterceptor, InitializingBea
         String requestURI = request.getRequestURI();
 
         // Pass static pages
-        if (RequestUrlUtils.isStaticPage(requestURI)) {
-            log.debug("Pass static pages - {}", requestURI);
+        if (isExclude(requestURI)) {
+            log.debug("Pass exclude path - {}", requestURI);
             return true;
         }
 
@@ -65,6 +67,10 @@ public class AuthorityInterceptor implements HandlerInterceptor, InitializingBea
         // Validate user if authorized
         AuthorizedUser authorizedUser = null;
         for (Authentication authentication : AUTHENTICATIONS) {
+            // If the authentication match the request
+            if (!authentication.match(request)) {
+                continue;
+            }
             // Parse the authorized user
             authorizedUser = authentication.parseUser(request);
             if (authorizedUser != null) {
@@ -97,5 +103,11 @@ public class AuthorityInterceptor implements HandlerInterceptor, InitializingBea
         }
         SkipAuthority skipAuthority = ((HandlerMethod) handler).getMethodAnnotation(SkipAuthority.class);
         return skipAuthority != null;
+    }
+
+    private boolean isExclude(String requestURI) {
+        return ExcludeResources.match(requestURI) ||
+                PATH_MATCHER.match("/**/open/**", requestURI)
+                ;
     }
 }

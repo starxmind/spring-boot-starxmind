@@ -52,11 +52,11 @@
 
     <groupId>com.starxmind</groupId>
     <artifactId>spring-boot-starxmind</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <properties>
         <!-- starxmind springboot 版本 -->
-        <springboot-starxmind.version>0.0.5</springboot-starxmind.version>
+        <springboot-starxmind.version>0.0.6</springboot-starxmind.version>
         <!-- 基础依赖版本 -->
         <bass.version>0.0.1</bass.version>
         <!-- 第三方库依赖版本 -->
