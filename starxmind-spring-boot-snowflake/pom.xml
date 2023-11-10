@@ -15,7 +15,7 @@
         <!-- spring web -->
         <dependency>
             <groupId>com.starxmind</groupId>
-            <artifactId>starxmind-spring-boot-web</artifactId>
+            <artifactId>starxmind-spring-boot-utils</artifactId>
         </dependency>
     </dependencies>
 </project>

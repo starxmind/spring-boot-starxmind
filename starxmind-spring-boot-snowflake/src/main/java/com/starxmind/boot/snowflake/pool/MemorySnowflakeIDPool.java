@@ -1,5 +1,6 @@
-package com.starxmind.boot.snowflake;
+package com.starxmind.boot.snowflake.pool;
 
+import com.starxmind.boot.snowflake.generator.SnowflakeIDGenerator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.BlockingQueue;

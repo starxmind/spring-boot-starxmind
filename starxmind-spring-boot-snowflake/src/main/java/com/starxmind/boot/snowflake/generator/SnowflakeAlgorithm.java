@@ -1,4 +1,4 @@
-package com.starxmind.boot.snowflake;
+package com.starxmind.boot.snowflake.generator;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

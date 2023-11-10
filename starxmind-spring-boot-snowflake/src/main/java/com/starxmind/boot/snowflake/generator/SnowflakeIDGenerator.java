@@ -1,4 +1,4 @@
-package com.starxmind.boot.snowflake;
+package com.starxmind.boot.snowflake.generator;
 
 import lombok.RequiredArgsConstructor;
 

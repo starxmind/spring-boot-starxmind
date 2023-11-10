@@ -1,5 +1,8 @@
 package com.starxmind.boot.snowflake;
 
+import com.starxmind.boot.snowflake.generator.SnowflakeIDGenerator;
+import com.starxmind.boot.snowflake.pool.MemorySnowflakeIDPool;
+import com.starxmind.boot.snowflake.pool.SnowflakeIDPool;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

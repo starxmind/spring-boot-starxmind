@@ -1,5 +1,6 @@
-package com.starxmind.boot.snowflake;
+package com.starxmind.boot.snowflake.pool;
 
+import com.starxmind.boot.snowflake.generator.SnowflakeIDGenerator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
