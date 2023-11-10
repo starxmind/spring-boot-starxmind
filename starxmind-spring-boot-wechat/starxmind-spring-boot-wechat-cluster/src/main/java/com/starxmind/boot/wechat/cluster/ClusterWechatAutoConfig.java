@@ -6,7 +6,6 @@ import com.starxmind.piano.wechat.token.core.WeChatInfo;
 import com.starxmind.piano.wechat.token.redis.RedisAccessTokenManager;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,25 +19,17 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 public class ClusterWechatAutoConfig {
-    @Autowired
-    private StarxHttp StarxHttp;
-
-    @Autowired
-    private RedissonClient redissonClient;
-
-    @Value("${starxmind.wechat.appid}")
-    private String appId;
-
-    @Value("${starxmind.wechat.secret}")
-    private String secret;
 
     @Bean
-    public WechatClient wechatClient() {
+    public WechatClient wechatClient(@Value("${starxmind.wechat.appid}") String appId,
+                                     @Value("${starxmind.wechat.secret}") String secret,
+                                     StarxHttp starxHttp,
+                                     RedissonClient redissonClient) {
         WeChatInfo weChatInfo = WeChatInfo.builder()
                 .appId(appId)
                 .secret(secret)
                 .build();
-        RedisAccessTokenManager accessTokenManager = new RedisAccessTokenManager(StarxHttp, weChatInfo, redissonClient);
-        return new WechatClient(weChatInfo, StarxHttp, accessTokenManager);
+        RedisAccessTokenManager accessTokenManager = new RedisAccessTokenManager(starxHttp, weChatInfo, redissonClient);
+        return new WechatClient(weChatInfo, starxHttp, accessTokenManager);
     }
 }

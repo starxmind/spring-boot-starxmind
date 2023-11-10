@@ -23,7 +23,7 @@ public class StarxHttpAutoConfig {
     private long keepAliveDurationSeconds;
 
     @Bean
-    public StarxHttp StarxHttp() {
+    public StarxHttp starxHttp() {
         return new StarxHttp(timeoutSeconds, maxIdleConnections, keepAliveDurationSeconds);
     }
 }
