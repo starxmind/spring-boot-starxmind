@@ -1,5 +1,7 @@
 package com.starxmind.boot.snowflake;
 
+import com.google.common.collect.Lists;
+import com.starxmind.bass.sugar.ReflectionUtils;
 import com.starxmind.boot.snowflake.generator.SnowflakeIDGenerator;
 import com.starxmind.boot.snowflake.pool.MemorySnowflakeIDPool;
 import com.starxmind.boot.snowflake.pool.SnowflakeIDPool;
@@ -57,25 +59,19 @@ public class SnowflakeAutoConfig {
         if (StringUtils.isBlank(classname)) {
             classname = MemorySnowflakeIDPool.class.getName();
         }
-        Class<?> childClass = Class.forName(classname);
-        for (Constructor<?> constructor : childClass.getConstructors()) {
-            Class<?>[] parameterTypes = constructor.getParameterTypes();
-            if ( parameterTypes[0] .equals(int.class) &&
-                    parameterTypes[1] .equals(int.class) &&
-                    parameterTypes[2] .equals(SnowflakeIDGenerator.class)) {
-                // 动态创建参数实例
-                Object[] parameters = new Object[parameterTypes.length];
-                parameters[0] = maximumPoolSize;
-                parameters[1] = minimumIdle;
-                parameters[2] = snowflakeIDGenerator;
-                for (int i = 3; i < parameterTypes.length; i++) {
-                    parameters[i] = beanFactory.createBean(parameterTypes[i]);
-                }
-                SnowflakeIDPool snowflakeIDPool = (SnowflakeIDPool) constructor.newInstance(parameters);
-                snowflakeIDPool.init();
-                return snowflakeIDPool;
-            }
+        Class<?> clazz = Class.forName(classname);
+        Constructor<?> constructor = ReflectionUtils.getSuitableConstructor(clazz,
+                Lists.newArrayList(Integer.TYPE, Integer.TYPE, SnowflakeIDGenerator.class));
+        Class<?>[] parameterTypes = constructor.getParameterTypes();
+        Object[] parameters = new Object[parameterTypes.length];
+        parameters[0] = maximumPoolSize;
+        parameters[1] = minimumIdle;
+        parameters[2] = snowflakeIDGenerator;
+        for (int i = 3; i < parameterTypes.length; i++) {
+            parameters[i] = beanFactory.createBean(parameterTypes[i]);
         }
-        throw new IllegalArgumentException("No suitable constructor found for " + childClass.getName());
+        SnowflakeIDPool snowflakeIDPool = (SnowflakeIDPool) constructor.newInstance(parameters);
+        snowflakeIDPool.init();
+        return snowflakeIDPool;
     }
 }

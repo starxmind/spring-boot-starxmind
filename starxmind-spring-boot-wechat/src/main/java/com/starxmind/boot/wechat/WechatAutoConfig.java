@@ -1,6 +1,8 @@
 package com.starxmind.boot.wechat;
 
+import com.google.common.collect.Lists;
 import com.starxmind.bass.http.StarxHttp;
+import com.starxmind.bass.sugar.ReflectionUtils;
 import com.starxmind.piano.token.memory.MemoryAccessTokenManager;
 import com.starxmind.piano.wechat.client.WechatClient;
 import com.starxmind.piano.wechat.token.core.AccessTokenManager;
@@ -33,22 +35,16 @@ public class WechatAutoConfig {
         if (StringUtils.isBlank(classname)) {
             classname = MemoryAccessTokenManager.class.getName();
         }
-        Class<?> childClass = Class.forName(classname);
-        for (Constructor<?> constructor : childClass.getConstructors()) {
-            Class<?>[] parameterTypes = constructor.getParameterTypes();
-            if ( parameterTypes[0] .equals(WeChatInfo.class) &&
-                    parameterTypes[1] .equals(StarxHttp.class)) {
-                // 动态创建参数实例
-                Object[] parameters = new Object[parameterTypes.length];
-                parameters[0] = starxHttp;
-                parameters[1] = weChatInfo;
-                for (int i = 2; i < parameterTypes.length; i++) {
-                    parameters[i] = beanFactory.createBean(parameterTypes[i]);
-                }
-                AccessTokenManager accessTokenManager = (AccessTokenManager) constructor.newInstance(parameters);
-                return new WechatClient(weChatInfo, starxHttp, accessTokenManager);
-            }
+        Class<?> clazz = Class.forName(classname);
+        Constructor<?> constructor = ReflectionUtils.getSuitableConstructor(clazz,
+                Lists.newArrayList(WeChatInfo.class));
+        Class<?>[] parameterTypes = constructor.getParameterTypes();
+        Object[] parameters = new Object[parameterTypes.length];
+        parameters[0] = weChatInfo;
+        for (int i = 1; i < parameterTypes.length; i++) {
+            parameters[i] = beanFactory.createBean(parameterTypes[i]);
         }
-        throw new IllegalArgumentException("No suitable constructor found for " + childClass.getName());
+        AccessTokenManager accessTokenManager = (AccessTokenManager) constructor.newInstance(parameters);
+        return new WechatClient(weChatInfo, starxHttp, accessTokenManager);
     }
 }
