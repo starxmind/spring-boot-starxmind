@@ -67,8 +67,8 @@ public class AuthorityInterceptor implements HandlerInterceptor, InitializingBea
         // Validate user if authorized
         AuthorizedUser authorizedUser = null;
         for (Authentication authentication : AUTHENTICATIONS) {
-            // If the authentication match the request
-            if (!authentication.match(request)) {
+            // If the authentication match the request, then enable it
+            if (!authentication.enableIf(request)) {
                 continue;
             }
             // Parse the authorized user

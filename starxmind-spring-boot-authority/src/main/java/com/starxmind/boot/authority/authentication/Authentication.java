@@ -21,11 +21,11 @@ public interface Authentication<U extends AuthorizedUser> {
     String authenticationName();
 
     /**
-     * if match the request
+     * The authentication will be enabled if match the request
      * @param request Http request
      * @return match result
      */
-    boolean match(HttpServletRequest request);
+    boolean enableIf(HttpServletRequest request);
 
     /**
      * parse user from HttpServletRequest
