@@ -52,15 +52,15 @@
 
     <groupId>com.starxmind</groupId>
     <artifactId>spring-boot-starxmind</artifactId>
-    <version>0.0.6</version>
+    <version>0.1.0</version>
 
     <properties>
         <!-- starxmind springboot 版本 -->
-        <springboot-starxmind.version>0.0.6</springboot-starxmind.version>
+        <springboot-starxmind.version>0.1.0</springboot-starxmind.version>
         <!-- 基础依赖版本 -->
-        <bass.version>0.0.2</bass.version>
+        <bass.version>0.0.3</bass.version>
         <!-- 第三方库依赖版本 -->
-        <piano.version>0.0.6</piano.version>
+        <piano.version>0.1.0</piano.version>
         <!-- 字符集 -->
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
