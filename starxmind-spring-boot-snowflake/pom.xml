@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.starxmind</groupId>
         <artifactId>spring-boot-starxmind</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2</version>
     </parent>
 
     <artifactId>starxmind-spring-boot-snowflake</artifactId>
