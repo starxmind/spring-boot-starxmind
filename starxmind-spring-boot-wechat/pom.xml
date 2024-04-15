@@ -6,7 +6,7 @@
     <parent>
         <artifactId>spring-boot-starxmind</artifactId>
         <groupId>com.starxmind</groupId>
-        <version>0.1.4</version>
+        <version>0.1.5</version>
     </parent>
 
     <artifactId>starxmind-spring-boot-wechat</artifactId>
