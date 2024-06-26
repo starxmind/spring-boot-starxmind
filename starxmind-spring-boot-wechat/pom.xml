@@ -6,7 +6,7 @@
     <parent>
         <artifactId>spring-boot-starxmind</artifactId>
         <groupId>com.starxmind</groupId>
-        <version>0.1.5</version>
+        <version>0.1.6</version>
     </parent>
 
     <artifactId>starxmind-spring-boot-wechat</artifactId>
@@ -22,12 +22,17 @@
         </dependency>
         <dependency>
             <groupId>com.starxmind</groupId>
+            <artifactId>piano-wechat-token-memory</artifactId>
+            <version>${piano.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.starxmind</groupId>
             <artifactId>piano-wechat-client</artifactId>
             <version>${piano.version}</version>
         </dependency>
         <dependency>
             <groupId>com.starxmind</groupId>
-            <artifactId>piano-wechat-token-memory</artifactId>
+            <artifactId>piano-wechat-pay</artifactId>
             <version>${piano.version}</version>
         </dependency>
     </dependencies>

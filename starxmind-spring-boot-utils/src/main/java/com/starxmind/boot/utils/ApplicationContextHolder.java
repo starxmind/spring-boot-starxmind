@@ -1,5 +1,6 @@
 package com.starxmind.boot.utils;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -14,9 +15,16 @@ import java.util.Map;
  * @author pizzalord
  * @since 1.0
  */
+@Getter
 @Slf4j
 @Component
 public class ApplicationContextHolder implements ApplicationContextAware {
+    /**
+     * -- GETTER --
+     *  获取Spring上下文
+     *
+     * @return
+     */
     private ApplicationContext applicationContext;
 
     /**
@@ -29,15 +37,6 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
         log.info("Application context is hold by ApplicationContextHolder...");
-    }
-
-    /**
-     * 获取Spring上下文
-     *
-     * @return
-     */
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
     /**

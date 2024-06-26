@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.starxmind.boot.utils.ApplicationContextHolder
+  com.starxmind.boot.utils.UtilsAutoConfig

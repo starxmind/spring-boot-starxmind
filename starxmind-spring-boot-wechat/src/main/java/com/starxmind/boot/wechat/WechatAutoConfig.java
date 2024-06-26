@@ -3,8 +3,12 @@ package com.starxmind.boot.wechat;
 import com.google.common.collect.Lists;
 import com.starxmind.bass.http.StarxHttp;
 import com.starxmind.bass.sugar.ReflectionUtils;
+import com.starxmind.boot.utils.ResourceUtils;
 import com.starxmind.piano.token.memory.MemoryAccessTokenManager;
 import com.starxmind.piano.wechat.client.WechatClient;
+import com.starxmind.piano.wechat.pay.JsapiWechatPay;
+import com.starxmind.piano.wechat.pay.NativeWechatPay;
+import com.starxmind.piano.wechat.pay.PayConfig;
 import com.starxmind.piano.wechat.token.core.AccessTokenManager;
 import com.starxmind.piano.wechat.token.core.WeChatInfo;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 @Configuration
@@ -46,5 +51,35 @@ public class WechatAutoConfig {
         }
         AccessTokenManager accessTokenManager = (AccessTokenManager) constructor.newInstance(parameters);
         return new WechatClient(weChatInfo, starxHttp, accessTokenManager);
+    }
+
+    @Bean
+    public PayConfig payConfig(@Value("${starxmind.wechat.pay.merchant-id}") String merchantId,
+                               @Value("${starxmind.wechat.pay.private-key-path:}") String privateKeyPath,
+                               @Value("${starxmind.wechat.pay.merchant-serial-number}") String merchantSerialNumber,
+                               @Value("${starxmind.wechat.pay.api-v3-key}") String apiV3Key) throws IOException {
+        String privateKey = null;
+        if (StringUtils.isBlank(privateKeyPath)) {
+            privateKey = ResourceUtils.read("wechatpay/cert");
+        }
+        return PayConfig.builder()
+                .merchantId(merchantId)
+                .privateKey(privateKey)
+                .privateKeyPath(privateKeyPath)
+                .merchantSerialNumber(merchantSerialNumber)
+                .apiV3Key(apiV3Key)
+                .build();
+    }
+
+    @Bean
+    public NativeWechatPay nativeWechatPay(@Value("${starxmind.wechat.appid}") String appId,
+                                           PayConfig payConfig) {
+        return new NativeWechatPay(appId, payConfig);
+    }
+
+    @Bean
+    public JsapiWechatPay jsapiWechatPay(@Value("${starxmind.wechat.appid}") String appId,
+                                         PayConfig payConfig) {
+        return new JsapiWechatPay(appId, payConfig);
     }
 }
