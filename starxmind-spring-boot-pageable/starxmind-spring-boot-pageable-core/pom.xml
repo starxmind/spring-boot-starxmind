@@ -5,24 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.starxmind</groupId>
-        <artifactId>spring-boot-starxmind</artifactId>
+        <artifactId>starxmind-spring-boot-pageable</artifactId>
         <version>0.1.6</version>
     </parent>
 
-    <artifactId>starxmind-spring-boot-pageable</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>starxmind-spring-boot-pageable-core</module>
-        <module>starxmind-spring-boot-pageable-mybatis</module>
-    </modules>
+    <artifactId>starxmind-spring-boot-pageable-core</artifactId>
 
     <dependencies>
-        <!-- 分页插件 -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.4.5</version>
-        </dependency>
         <!-- 生成swagger文档 -->
         <dependency>
             <groupId>io.springfox</groupId>

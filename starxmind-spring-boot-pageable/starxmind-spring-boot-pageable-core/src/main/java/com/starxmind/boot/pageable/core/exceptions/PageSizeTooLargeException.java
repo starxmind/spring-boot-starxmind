@@ -1,4 +1,4 @@
-package com.starxmind.boot.pageable.exceptions;
+package com.starxmind.boot.pageable.core.exceptions;
 
 /**
  * 页大小过大异常

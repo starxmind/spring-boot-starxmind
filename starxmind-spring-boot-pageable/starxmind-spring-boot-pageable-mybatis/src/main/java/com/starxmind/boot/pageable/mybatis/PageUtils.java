@@ -1,6 +1,7 @@
-package com.starxmind.boot.pageable;
+package com.starxmind.boot.pageable.mybatis;
 
 import com.github.pagehelper.PageInfo;
+import com.starxmind.boot.pageable.core.PageResponse;
 
 import java.util.List;
 

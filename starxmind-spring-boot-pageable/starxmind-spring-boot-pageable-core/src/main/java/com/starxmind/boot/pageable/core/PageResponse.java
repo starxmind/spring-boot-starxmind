@@ -1,4 +1,4 @@
-package com.starxmind.boot.pageable;
+package com.starxmind.boot.pageable.core;
 
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;

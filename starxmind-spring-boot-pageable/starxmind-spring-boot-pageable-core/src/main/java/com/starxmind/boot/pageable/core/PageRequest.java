@@ -1,7 +1,7 @@
-package com.starxmind.boot.pageable;
+package com.starxmind.boot.pageable.core;
 
 import com.starxmind.bass.sugar.Asserts;
-import com.starxmind.boot.pageable.exceptions.PageSizeTooLargeException;
+import com.starxmind.boot.pageable.core.exceptions.PageSizeTooLargeException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

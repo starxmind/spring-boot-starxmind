@@ -211,6 +211,16 @@
             </dependency>
             <dependency>
                 <groupId>com.starxmind</groupId>
+                <artifactId>starxmind-spring-boot-pageable-core</artifactId>
+                <version>${springboot-starxmind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.starxmind</groupId>
+                <artifactId>starxmind-spring-boot-pageable-mybatis</artifactId>
+                <version>${springboot-starxmind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.starxmind</groupId>
                 <artifactId>starxmind-spring-boot-persistence</artifactId>
                 <version>${springboot-starxmind.version}</version>
             </dependency>
