@@ -1,6 +1,6 @@
 package com.starxmind.boot.http;
 
-import com.starxmind.bass.http.StarxHttp;
+import com.starxmind.bass.http.XHttp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.0
  */
 @Configuration
-public class StarxHttpAutoConfig {
+public class XHttpAutoConfig {
     @Value("${starxmind.http.timeoutSeconds:60}")
     private long timeoutSeconds;
 
@@ -23,7 +23,7 @@ public class StarxHttpAutoConfig {
     private long keepAliveDurationSeconds;
 
     @Bean
-    public StarxHttp starxHttp() {
-        return new StarxHttp(timeoutSeconds, maxIdleConnections, keepAliveDurationSeconds);
+    public XHttp XHttp() {
+        return new XHttp(timeoutSeconds, maxIdleConnections, keepAliveDurationSeconds);
     }
 }

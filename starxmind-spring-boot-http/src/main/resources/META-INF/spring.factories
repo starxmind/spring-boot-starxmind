@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.starxmind.boot.http.StarxHttpAutoConfig
+  com.starxmind.boot.http.XHttpAutoConfig

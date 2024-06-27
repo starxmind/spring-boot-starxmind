@@ -1,7 +1,7 @@
 package com.starxmind.boot.wechat;
 
 import com.google.common.collect.Lists;
-import com.starxmind.bass.http.StarxHttp;
+import com.starxmind.bass.http.XHttp;
 import com.starxmind.bass.sugar.ReflectionUtils;
 import com.starxmind.boot.utils.ResourceUtils;
 import com.starxmind.piano.token.memory.MemoryAccessTokenManager;
@@ -30,7 +30,7 @@ public class WechatAutoConfig {
     public WechatClient wechatClient(@Value("${starxmind.wechat.access-token-manager.classname:}") String classname,
                                      @Value("${starxmind.wechat.appid}") String appId,
                                      @Value("${starxmind.wechat.secret}") String secret,
-                                     StarxHttp starxHttp) throws Exception {
+                                     XHttp XHttp) throws Exception {
         WeChatInfo weChatInfo = WeChatInfo.builder()
                 .appId(appId)
                 .secret(secret)
@@ -50,7 +50,7 @@ public class WechatAutoConfig {
             parameters[i] = beanFactory.createBean(parameterTypes[i]);
         }
         AccessTokenManager accessTokenManager = (AccessTokenManager) constructor.newInstance(parameters);
-        return new WechatClient(weChatInfo, starxHttp, accessTokenManager);
+        return new WechatClient(weChatInfo, XHttp, accessTokenManager);
     }
 
     @Bean
