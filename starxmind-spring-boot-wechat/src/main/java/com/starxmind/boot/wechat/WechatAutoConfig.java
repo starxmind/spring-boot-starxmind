@@ -10,6 +10,7 @@ import com.starxmind.piano.wechat.pay.JsapiWechatPay;
 import com.starxmind.piano.wechat.pay.NativeWechatPay;
 import com.starxmind.piano.wechat.pay.PayConfig;
 import com.starxmind.piano.wechat.pay.cipher.WechatAesCipher;
+import com.starxmind.piano.wechat.pay.notify.WechatNotifyResolver;
 import com.starxmind.piano.wechat.token.core.AccessTokenManager;
 import com.starxmind.piano.wechat.token.core.WeChatInfo;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +86,7 @@ public class WechatAutoConfig {
     }
 
     @Bean
-    public WechatAesCipher wechatAesCipher(PayConfig payConfig) {
-        return new WechatAesCipher(payConfig.getApiV3Key());
+    public WechatNotifyResolver wechatNotifyResolver(PayConfig payConfig) {
+        return new WechatNotifyResolver(new WechatAesCipher(payConfig.getApiV3Key()));
     }
 }
