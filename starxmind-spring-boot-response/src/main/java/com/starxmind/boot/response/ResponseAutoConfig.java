@@ -14,15 +14,4 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = "com.starxmind.boot.response")
 @Configuration
 public class ResponseAutoConfig {
-//    @Bean
-//    public ResponseControllerAdvice responseAdvice() {
-//        log.info("starxmind spring-boot: ResponseControllerAdvice is registered...");
-//        return new ResponseControllerAdvice();
-//    }
-//
-//    @Bean
-//    public OptionsFactory optionsFactory() {
-//        log.info("starxmind: OptionsFactory is registered...");
-//        return new OptionsFactory();
-//    }
 }

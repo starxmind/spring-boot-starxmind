@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.starxmind</groupId>
-            <artifactId>starxmind-spring-boot-web</artifactId>
+            <artifactId>starxmind-spring-boot-utils</artifactId>
         </dependency>
         <!-- 生成swagger文档 -->
         <dependency>

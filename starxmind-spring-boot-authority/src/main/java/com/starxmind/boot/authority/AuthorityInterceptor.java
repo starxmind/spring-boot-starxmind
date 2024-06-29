@@ -107,7 +107,6 @@ public class AuthorityInterceptor implements HandlerInterceptor, InitializingBea
 
     private boolean isExclude(String requestURI) {
         return ExcludeResources.match(requestURI) ||
-                PATH_MATCHER.match("/**/open/**", requestURI)
-                ;
+                PATH_MATCHER.match("/**/open/**", requestURI);
     }
 }

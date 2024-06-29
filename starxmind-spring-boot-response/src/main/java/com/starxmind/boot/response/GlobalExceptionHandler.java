@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
-public class ResponseControllerAdvice {
+public class GlobalExceptionHandler {
     /**
      * 参数校验异常 code:400 (这里专门处理参数问题)
      *
