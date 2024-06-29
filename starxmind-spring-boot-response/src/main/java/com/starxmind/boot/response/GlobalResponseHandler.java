@@ -6,7 +6,7 @@ import com.starxmind.boot.utils.ApplicationContextHolder;
 import com.starxmind.boot.utils.ExcludeResources;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
+import org.apache.commons.lang3.ClassUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -14,27 +14,18 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
 
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
-public class GlobalResponseHandler implements ResponseBodyAdvice<Object>, InitializingBean {
-    /**
-     * All registered field advices
-     */
-    private static Collection<FieldAdvice> FIELD_ADVICES;
-    private final ApplicationContextHolder applicationContextHolder;
+public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Map<String, FieldAdvice> authenticationMap = applicationContextHolder.getApplicationContext().getBeansOfType(FieldAdvice.class);
-        FIELD_ADVICES = authenticationMap.values();
-        log.info("<Starxmind Authority> has found <{}> authentications", authenticationMap.size());
-    }
+    private final ApplicationContextHolder applicationContextHolder;
 
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
@@ -61,19 +52,93 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object>, Initia
 
         // Return itself if it is type already of type Response
         if (body instanceof Response) {
-            handleFields(((Response) body).getResult());
+            processResult(((Response) body).getResult());
             return body;
         }
 
         // Otherwise, wrap it as a Response
-        handleFields(body);
+        processResult(body);
         return Response.success(body);
     }
 
-    private void handleFields(Object result) {
-        FIELD_ADVICES.forEach(
-                x -> x.handle(result)
-        );
+    private void processResult(Object result) {
+        // Go out if result is null...
+        if (result == null) {
+            return;
+        }
+
+        // Do not process result for primitive type...
+        if (ClassUtils.isPrimitiveOrWrapper(result.getClass())) {
+            return;
+        }
+
+        try {
+            processObject(result);
+        } catch (IllegalAccessException ex) {
+            throw new RuntimeException("Fatal error at executing field handler!", ex);
+        }
+    }
+
+    private void processObject(Object obj) throws IllegalAccessException {
+        // Go out if result is null...
+        if (obj == null) {
+            return;
+        }
+
+        // Get all fields
+        Class<?> clazz = obj.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+
+        for (Field field : fields) {
+            // Make sure get private fields
+            field.setAccessible(true);
+
+            // Handle nested object
+            if (isNestedDefine(field.getType())) {
+                Object nestedObj = field.get(obj);
+                if (nestedObj != null) {
+                    processResult(nestedObj); // 递归处理对象
+                }
+            }
+
+            // Handle array
+            else if (field.getType().isArray()) {
+                Object arrayObj = field.get(obj);
+                if (arrayObj != null) {
+                    int length = Array.getLength(arrayObj);
+                    for (int i = 0; i < length; i++) {
+                        Object element = Array.get(arrayObj, i);
+                        processResult(element); // 递归处理数组元素
+                    }
+                }
+            }
+
+            // Handl list
+            else if (List.class.isAssignableFrom(field.getType())) {
+                List<?> listObj = (List<?>) field.get(obj);
+                if (listObj != null) {
+                    for (Object element : listObj) {
+                        processResult(element); // 递归处理列表元素
+                    }
+                }
+            }
+
+            FieldAdvice fieldAdvice = field.getAnnotation(FieldAdvice.class);
+            if (fieldAdvice != null) {
+                Class<? extends FieldHandler> fieldHandlerClass = fieldAdvice.fieldHandler();
+                FieldHandler fieldHandler = applicationContextHolder.getBean(fieldHandlerClass);
+                Object value = field.get(obj);
+                value = fieldHandler.handle(value);
+                field.set(obj, value);
+            }
+        }
+    }
+
+    private boolean isNestedDefine(Class<?> type) {
+        return !type.isPrimitive() &&
+                !type.getName().startsWith("java.") &&
+                !type.isArray() &&
+                !List.class.isAssignableFrom(type);
     }
 
 }
