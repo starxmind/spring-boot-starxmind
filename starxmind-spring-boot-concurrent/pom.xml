@@ -9,33 +9,24 @@
         <version>0.1.6</version>
     </parent>
 
-    <artifactId>starxmind-spring-boot-starter</artifactId>
+    <artifactId>starxmind-spring-boot-concurrent</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.starxmind</groupId>
-            <artifactId>starxmind-spring-boot-web</artifactId>
-        </dependency>
+        <!-- spring web -->
         <dependency>
             <groupId>com.starxmind</groupId>
             <artifactId>starxmind-spring-boot-utils</artifactId>
         </dependency>
+        <!-- lock -->
         <dependency>
             <groupId>com.starxmind</groupId>
-            <artifactId>starxmind-spring-boot-response</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.starxmind</groupId>
-            <artifactId>starxmind-spring-boot-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.starxmind</groupId>
-            <artifactId>bass-json</artifactId>
+            <artifactId>bass-concurrent</artifactId>
             <version>${bass.version}</version>
         </dependency>
+        <!-- AOP -->
         <dependency>
-            <groupId>com.starxmind</groupId>
-            <artifactId>starxmind-spring-boot-concurrent</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
     </dependencies>
 </project>

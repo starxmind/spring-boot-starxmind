@@ -1,6 +1,6 @@
 package com.starxmind.boot.redis;
 
-import com.starxmind.piano.redis.DistributedLockFactory;
+import com.starxmind.piano.redis.DistributedXLockFactory;
 import com.starxmind.piano.redis.RedissonClientCreator;
 import com.starxmind.piano.redis.config.ClusterConfig;
 import com.starxmind.piano.redis.config.Pool;
@@ -63,7 +63,7 @@ public class RedisAutoConfig {
      * @return 分布式锁工厂
      */
     @Bean
-    public DistributedLockFactory distributedLockFactory() {
-        return new DistributedLockFactory(redissonClient());
+    public DistributedXLockFactory distributedXLockFactory() {
+        return new DistributedXLockFactory(redissonClient());
     }
 }

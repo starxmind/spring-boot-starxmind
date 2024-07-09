@@ -41,6 +41,7 @@
         <module>starxmind-spring-boot-wechat</module>
         <module>starxmind-spring-boot-ldap</module>
         <module>starxmind-spring-boot-snowflake</module>
+        <module>starxmind-spring-boot-concurrent</module>
     </modules>
 
     <parent>
@@ -292,6 +293,11 @@
             <dependency>
                 <groupId>com.starxmind</groupId>
                 <artifactId>starxmind-spring-boot-snowflake</artifactId>
+                <version>${springboot-starxmind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.starxmind</groupId>
+                <artifactId>starxmind-spring-boot-concurrent</artifactId>
                 <version>${springboot-starxmind.version}</version>
             </dependency>
         </dependencies>

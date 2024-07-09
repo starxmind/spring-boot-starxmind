@@ -21,10 +21,9 @@
             <artifactId>piano-redis</artifactId>
             <version>${piano.version}</version>
         </dependency>
-        <!-- 使用AOP拦需要计费的接口 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <groupId>com.starxmind</groupId>
+            <artifactId>starxmind-spring-boot-concurrent</artifactId>
         </dependency>
     </dependencies>
 </project>

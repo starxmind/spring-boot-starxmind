@@ -1,4 +1,7 @@
-package com.starxmind.boot.redis.annotation;
+package com.starxmind.boot.concurrent.lock.annotation;
+
+import com.starxmind.bass.concurrent.lock.XLockFactory;
+import com.starxmind.bass.concurrent.lock.memory.MemoryXLockFactory;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TryLock {
+public @interface LeaseTryLock {
     /**
      * 锁的名称
      * 比如为方法加锁:
@@ -24,12 +27,17 @@ public @interface TryLock {
     long waitTime() default 0;
 
     /**
-     * 锁定时间
+     * 锁租赁时间
      */
     long leaseTime() default 30;
 
     /**
-     * 锁定时间的单位
+     * 时间单位
      */
-    TimeUnit unit() default TimeUnit.SECONDS;
+    TimeUnit timeUnit() default TimeUnit.SECONDS;
+
+    /**
+     * Class of XLockFactory implements
+     */
+    Class<? extends XLockFactory> clazz() default MemoryXLockFactory.class;
 }

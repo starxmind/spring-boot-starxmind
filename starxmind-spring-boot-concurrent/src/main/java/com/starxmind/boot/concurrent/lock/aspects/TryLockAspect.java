@@ -1,8 +1,9 @@
-package com.starxmind.boot.redis.aspects;
+package com.starxmind.boot.concurrent.lock.aspects;
 
-import com.starxmind.boot.redis.annotation.TryLock;
-import com.starxmind.piano.redis.DistributedLock;
-import com.starxmind.piano.redis.DistributedLockFactory;
+import com.starxmind.bass.concurrent.lock.XLock;
+import com.starxmind.bass.concurrent.lock.XLockFactory;
+import com.starxmind.boot.concurrent.lock.XLockFactoryHolder;
+import com.starxmind.boot.concurrent.lock.annotation.TryLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -22,9 +23,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class TryLockAspect extends AbstractAspect {
-    private final DistributedLockFactory distributedLockFactory;
+    private final XLockFactoryHolder xLockFactoryHolder;
 
-    @Pointcut("@annotation(com.starxmind.boot.redis.annotation.TryLock)")
+    @Pointcut("@annotation(com.starxmind.boot.concurrent.lock.annotation.TryLock)")
     public void pointCut() {
         log.debug("<TryLockAspect.pointCut> Declare the pointcut...");
     }
@@ -34,17 +35,20 @@ public class TryLockAspect extends AbstractAspect {
         log.debug("<TryLockAspect.execute> TryLock begin...");
 
         String lockName = getLockName(joinPoint, tryLock.value());
-        DistributedLock distributedLock = distributedLockFactory.get(lockName);
-        boolean acquired = distributedLock.tryLock(tryLock.waitTime(), tryLock.leaseTime(), tryLock.unit());
-
+        XLockFactory xLockFactory = xLockFactoryHolder.get(tryLock.clazz());
+        XLock xLock = xLockFactory.get(lockName);
+        boolean acquired;
+        if (tryLock.waitTime() > 0) {
+            acquired = xLock.tryLock(tryLock.waitTime(), tryLock.timeUnit());
+        } else {
+            acquired = xLock.tryLock();
+        }
         Object proceed = null;
         if (acquired) {
             try {
                 proceed = joinPoint.proceed();
-            } catch (Throwable throwable) {
-                throw throwable;
             } finally {
-                distributedLock.unlock();
+                xLock.unlock();
             }
         }
 

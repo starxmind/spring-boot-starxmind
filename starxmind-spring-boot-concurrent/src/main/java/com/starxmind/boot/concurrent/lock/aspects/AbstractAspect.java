@@ -1,4 +1,4 @@
-package com.starxmind.boot.redis.aspects;
+package com.starxmind.boot.concurrent.lock.aspects;
 
 import com.google.common.collect.Maps;
 import com.starxmind.bass.sugar.ExpressionUtils;
