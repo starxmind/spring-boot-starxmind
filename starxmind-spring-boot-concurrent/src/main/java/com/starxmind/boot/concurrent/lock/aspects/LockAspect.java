@@ -32,7 +32,7 @@ public class LockAspect extends AbstractAspect {
 
     @Around("pointCut() && @annotation(lock)")
     public Object execute(ProceedingJoinPoint joinPoint, Lock lock) throws Throwable {
-        log.debug("<LockAspect.execute> Lock begin...");
+        log.debug("<LeaseLockAspect.execute> LeaseLock begin...");
 
         String lockName = getLockName(joinPoint, lock.value());
         XLockFactory xLockFactory = xLockFactoryHolder.get(lock.clazz());
@@ -40,13 +40,13 @@ public class LockAspect extends AbstractAspect {
 
         Object proceed;
         try {
-            xLock.lock();
+            xLock.lock(lock.leaseTime(), lock.timeUnit());
             proceed = joinPoint.proceed();
         } finally {
             xLock.unlock();
         }
 
-        log.debug("<LockAspect.execute> Lock end.");
+        log.debug("<LeaseLockAspect.execute> LeaseLock end.");
         return proceed;
     }
 }

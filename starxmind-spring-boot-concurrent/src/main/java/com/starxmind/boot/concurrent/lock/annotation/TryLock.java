@@ -27,6 +27,11 @@ public @interface TryLock {
     long waitTime() default 0;
 
     /**
+     * 锁租赁时间
+     */
+    long leaseTime() default 30;
+
+    /**
      * 时间单位
      */
     TimeUnit timeUnit() default TimeUnit.SECONDS;
