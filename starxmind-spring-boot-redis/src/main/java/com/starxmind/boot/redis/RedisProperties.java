@@ -3,8 +3,10 @@ package com.starxmind.boot.redis;
 import com.starxmind.piano.redis.DeploymentMode;
 import com.starxmind.piano.redis.config.Cluster;
 import com.starxmind.piano.redis.config.Pool;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +18,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationProperties(prefix = "starxmind.redis")
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder(toBuilder = true)
 @Data
 public class RedisProperties {

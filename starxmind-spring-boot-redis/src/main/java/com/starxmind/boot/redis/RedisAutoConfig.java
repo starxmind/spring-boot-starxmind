@@ -11,7 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 
 /**
  * 集群Redis配置
@@ -23,7 +22,6 @@ import org.springframework.context.annotation.Lazy;
 @Configuration
 @RequiredArgsConstructor
 public class RedisAutoConfig {
-    @Lazy
     private final RedisProperties redisProperties;
 
     /**
