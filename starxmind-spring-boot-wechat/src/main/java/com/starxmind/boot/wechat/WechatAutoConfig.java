@@ -12,47 +12,43 @@ import com.starxmind.piano.wechat.pay.PayConfig;
 import com.starxmind.piano.wechat.pay.cipher.WechatAesCipher;
 import com.starxmind.piano.wechat.pay.notify.WechatNotifyResolver;
 import com.starxmind.piano.wechat.token.core.AccessTokenManager;
-import com.starxmind.piano.wechat.token.core.WeChatInfo;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 @Configuration
+@ComponentScan("com.starxmind.boot.wechat")
 @RequiredArgsConstructor
 public class WechatAutoConfig {
     private final AutowireCapableBeanFactory beanFactory;
+    private final WechatAppsConfig wechatAppsConfig;
 
     @Bean
     public WechatClient wechatClient(@Value("${starxmind.wechat.access-token-manager.classname:}") String classname,
-                                     @Value("${starxmind.wechat.appid}") String appId,
-                                     @Value("${starxmind.wechat.secret}") String secret,
                                      XHttp XHttp) throws Exception {
-        WeChatInfo weChatInfo = WeChatInfo.builder()
-                .appId(appId)
-                .secret(secret)
-                .build();
-
         // 传递Token管理器的实现类名来指定Token管理器
         if (StringUtils.isBlank(classname)) {
             classname = MemoryAccessTokenManager.class.getName();
         }
         Class<?> clazz = Class.forName(classname);
         Constructor<?> constructor = ReflectionUtils.getSuitableConstructor(clazz,
-                Lists.newArrayList(WeChatInfo.class));
+                Lists.newArrayList(List.class));
         Class<?>[] parameterTypes = constructor.getParameterTypes();
         Object[] parameters = new Object[parameterTypes.length];
-        parameters[0] = weChatInfo;
+        parameters[0] = wechatAppsConfig.getApps();
         for (int i = 1; i < parameterTypes.length; i++) {
-            parameters[i] = beanFactory.createBean(parameterTypes[i]);
+            parameters[i] = beanFactory.getBean(parameterTypes[i]);
         }
         AccessTokenManager accessTokenManager = (AccessTokenManager) constructor.newInstance(parameters);
-        return new WechatClient(weChatInfo, XHttp, accessTokenManager);
+        return new WechatClient(XHttp, accessTokenManager);
     }
 
     @Bean
@@ -74,15 +70,13 @@ public class WechatAutoConfig {
     }
 
     @Bean
-    public NativeWechatPay nativeWechatPay(@Value("${starxmind.wechat.appid}") String appId,
-                                           PayConfig payConfig) {
-        return new NativeWechatPay(appId, payConfig);
+    public NativeWechatPay nativeWechatPay(PayConfig payConfig) {
+        return new NativeWechatPay(payConfig);
     }
 
     @Bean
-    public JsapiWechatPay jsapiWechatPay(@Value("${starxmind.wechat.appid}") String appId,
-                                         PayConfig payConfig) {
-        return new JsapiWechatPay(appId, payConfig);
+    public JsapiWechatPay jsapiWechatPay(PayConfig payConfig) {
+        return new JsapiWechatPay(payConfig);
     }
 
     @Bean
