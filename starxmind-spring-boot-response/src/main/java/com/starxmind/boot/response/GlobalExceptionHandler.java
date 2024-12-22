@@ -27,7 +27,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Response handleParamException(MethodArgumentNotValidException ex) {
         FieldError fieldError = ex.getBindingResult().getFieldError();
-        String friendlyMessage = String.format("参数{%s}%s", fieldError.getField(), fieldError.getDefaultMessage());
+        String friendlyMessage;
+        if (StringUtils.isNotEmpty(fieldError.getDefaultMessage())) {
+            friendlyMessage = fieldError.getDefaultMessage();
+        } else {
+            friendlyMessage = String.format("参数{%s}不能为空", fieldError.getField());
+        }
         log.error(ResponseCode.ILLEGAL_REQ + ": " + fieldError);
         return Response.failWith(ResponseCode.ILLEGAL_REQ.getCode(), friendlyMessage);
     }
